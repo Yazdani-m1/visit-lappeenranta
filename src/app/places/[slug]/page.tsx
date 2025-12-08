@@ -27,6 +27,10 @@ export default async function PlacePage({
   const hasLocalTip = !!place.localTip;
   const hasSafety = !!place.safetyNotes;
 
+  // Safe rating values with sensible fallbacks
+  const ratingValue = (place.ratingAverage ?? place.rating ?? 0).toFixed(1);
+  const ratingCount = place.ratingCount ?? 0;
+
   return (
     <main className="mx-auto max-w-6xl px-4 pb-16 pt-10 md:pb-24 md:pt-16">
       {/* Header */}
@@ -42,9 +46,9 @@ export default async function PlacePage({
 
           <div className="flex flex-wrap items-center gap-3 pt-1 text-xs">
             <span className="inline-flex items-center gap-1 rounded-full bg-slate-900 px-3 py-1 text-amber-300">
-              <span>★ {place.ratingAverage.toFixed(1)}</span>
+              <span>★ {ratingValue}</span>
               <span className="text-[11px] text-slate-200">
-                ({place.ratingCount} reviews)
+                ({ratingCount} reviews)
               </span>
             </span>
 
@@ -53,8 +57,7 @@ export default async function PlacePage({
             </span>
 
             <span className="rounded-full bg-slate-100 px-3 py-1 text-[11px] text-slate-700">
-              {place.priceLevel} · ~{place.typicalVisitDurationMinutes} min
-              visit
+              {place.priceLevel} · ~{place.typicalVisitDurationMinutes} min visit
             </span>
           </div>
         </div>
@@ -121,9 +124,7 @@ export default async function PlacePage({
 
           {place.suitableFor?.length ? (
             <div className="space-y-2">
-              <h3 className="text-sm font-semibold text-slate-900">
-                Good for
-              </h3>
+              <h3 className="text-sm font-semibold text-slate-900">Good for</h3>
               <div className="flex flex-wrap gap-1.5">
                 {place.suitableFor.map((s) => (
                   <span

@@ -1,4 +1,5 @@
 // src/lib/places.ts
+
 import rawPlaces from '@/data/places.json';
 import type { Place } from '@/types';
 
@@ -32,7 +33,7 @@ type RawPlace = {
   imageUrl: string | null;
 };
 
-// "[https://...](https://...)"  →  "https://..."
+// "[https://...](https://...)" → "https://..."
 function extractUrl(value: string | null): string | null {
   if (!value) return null;
 
@@ -74,7 +75,10 @@ export function getPlaceBySlug(slug: string): Place | undefined {
 
 export function getTopRatedPlaces(limit = 6): Place[] {
   return [...places]
-    .sort((a, b) => b.ratingAverage - a.ratingAverage)
+    .sort(
+      (a, b) =>
+        (b.ratingAverage ?? b.rating ?? 0) - (a.ratingAverage ?? a.rating ?? 0),
+    )
     .slice(0, limit);
 }
 

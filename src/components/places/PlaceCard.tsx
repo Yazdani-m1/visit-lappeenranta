@@ -8,7 +8,12 @@ interface PlaceCardProps {
 
 export function PlaceCard({ place }: PlaceCardProps) {
   const href = `/places/${place.slug}`;
-  const tags = place.tags.slice(0, 3);
+  const tags = place.tags?.slice(0, 3) ?? [];
+  const tagsTotal = place.tags?.length ?? 0;
+
+  // Safe rating values with sensible fallbacks
+  const ratingValue = (place.ratingAverage ?? place.rating ?? 0).toFixed(1);
+  const ratingCount = place.ratingCount ?? 0;
 
   return (
     <Link
@@ -32,10 +37,8 @@ export function PlaceCard({ place }: PlaceCardProps) {
 
         {/* Rating pill */}
         <div className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-black/80 px-2.5 py-1 text-[10px] text-amber-300 shadow-sm shadow-black/40">
-          <span>★ {place.ratingAverage.toFixed(1)}</span>
-          <span className="text-[9px] text-sky-100">
-            ({place.ratingCount})
-          </span>
+          <span>★ {ratingValue}</span>
+          <span className="text-[9px] text-sky-100">({ratingCount})</span>
         </div>
 
         {/* Title area */}
@@ -75,9 +78,9 @@ export function PlaceCard({ place }: PlaceCardProps) {
                 {tag}
               </span>
             ))}
-            {place.tags.length > 3 && (
+            {tagsTotal > 3 && (
               <span className="text-[10px] text-slate-400">
-                +{place.tags.length - 3} more
+                +{tagsTotal - 3} more
               </span>
             )}
           </div>
