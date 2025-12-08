@@ -1,29 +1,50 @@
 // src/app/trip-plan/page.tsx
+import { Container } from '@/components/layout/Container';
 import { TripRequestForm } from '@/components/trip-plan/TripRequestForm';
 
 export default function TripPlanPage() {
   return (
-    <div className="mx-auto max-w-2xl space-y-6">
-      <div className="space-y-3">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-sky-700">
-          Trip plan request
-        </p>
-        <h1 className="text-2xl font-semibold tracking-tight text-slate-900 md:text-3xl">
-          Request a simple trip plan
-        </h1>
-        <p className="text-sm leading-relaxed text-slate-700 md:text-base">
-          Tell us when you are visiting Lappeenranta and what kind of places you enjoy. We will
-          use this guide&apos;s places to suggest a calm, realistic one– or two–day plan by email.
-        </p>
-        <p className="text-xs text-slate-500">
-          This is a demo form – in a real project your request would be stored securely and a
-          person would reply by email.
-        </p>
-      </div>
+    <Container>
+      <section className="grid gap-10 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1.1fr)] lg:items-start">
+        {/* Left: copy */}
+        <div className="space-y-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">
+            CUSTOM DAY PLAN
+          </p>
+          <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
+            Send us your dates and we sketch a calm day in Lappeenranta.
+          </h1>
+          <p className="max-w-xl text-sm leading-relaxed text-slate-700">
+            Share when you are in town, who you are travelling with and what you
+            enjoy. In a real service, a local planner would reply with a simple
+            one–day or weekend outline and a few concrete places from this app.
+          </p>
 
-      <div className="rounded-3xl border border-sky-100 bg-white p-5 shadow-lg shadow-sky-100/80">
-        <TripRequestForm />
-      </div>
-    </div>
+          <div className="space-y-2 rounded-2xl border border-sky-100 bg-white/80 p-4 text-xs text-slate-700">
+            <h2 className="text-xs font-semibold text-slate-900">
+              How this would work in production
+            </h2>
+            <ul className="mt-1 space-y-1">
+              <li>• You submit this short form.</li>
+              <li>• Request is stored in a database (Supabase).</li>
+              <li>• A human or service workflow replies to you by email.</li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Right: form card */}
+        <div className="rounded-3xl border border-sky-100 bg-white/90 p-5 shadow-md shadow-sky-100/80">
+          <h2 className="text-sm font-semibold text-slate-900">
+            Trip plan request
+          </h2>
+          <p className="mt-1 text-xs text-slate-600">
+            We focus here on clean UX, validation and a realistic data model.
+          </p>
+          <div className="mt-4">
+            <TripRequestForm />
+          </div>
+        </div>
+      </section>
+    </Container>
   );
 }

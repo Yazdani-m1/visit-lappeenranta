@@ -1,27 +1,20 @@
 // src/app/layout.tsx
-import type React from 'react';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import type { ReactNode } from 'react';
 import './globals.css';
-import { Shell } from '@/components/layout/Shell';
-
-const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Visit Lappeenranta',
-  description:
-    'A calm lakeside city guide and simple trip planner for Lappeenranta, Finland.',
+  description: 'A clean, modern guide to Lappeenranta for visitors and locals.',
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} antialiased`}>
-        <Shell>{children}</Shell>
+      <body className="min-h-screen bg-slate-50 text-slate-900 antialiased">
+        <div className="min-h-screen bg-gradient-to-b from-sky-50 via-slate-50 to-slate-100">
+          {children}
+        </div>
       </body>
     </html>
   );

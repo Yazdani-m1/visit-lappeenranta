@@ -1,36 +1,42 @@
 // src/components/ui/Button.tsx
-import * as React from 'react';
-import { cn } from '@/lib/utils';
+import type { ButtonHTMLAttributes, ReactNode } from 'react';
 
-type ButtonVariant = 'primary' | 'outline';
-type ButtonSize = 'sm' | 'md';
+type ButtonVariant = 'primary' | 'secondary' | 'ghost';
+type ButtonSize = 'md' | 'sm';
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   size?: ButtonSize;
+  children: ReactNode;
+  className?: string;
 }
 
 export function Button({
   variant = 'primary',
   size = 'md',
-  className,
+  className = '',
+  children,
   ...props
 }: ButtonProps) {
   const base =
-    'inline-flex items-center justify-center rounded-full font-medium transition shadow-sm disabled:cursor-not-allowed disabled:opacity-60';
+    'inline-flex items-center justify-center rounded-xl font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 disabled:cursor-not-allowed disabled:opacity-60';
+
   const variantClass =
     variant === 'primary'
-      ? 'bg-sky-600 text-white hover:bg-sky-500 shadow-md shadow-sky-200'
-      : 'border border-sky-200 bg-white text-sky-700 hover:bg-sky-50';
+      ? 'bg-sky-600 text-white shadow-sm shadow-sky-200 hover:bg-sky-500'
+      : variant === 'secondary'
+      ? 'bg-white text-slate-900 border border-sky-100 shadow-sm hover:bg-slate-50'
+      : 'bg-transparent text-slate-700 hover:bg-slate-100';
+
   const sizeClass =
-    size === 'sm'
-      ? 'px-3 py-1.5 text-xs'
-      : 'px-4 py-2 text-sm';
+    size === 'sm' ? 'px-3 py-1.5 text-xs' : 'px-4 py-2 text-sm';
 
   return (
     <button
-      className={cn(base, variantClass, sizeClass, className)}
+      className={`${base} ${variantClass} ${sizeClass} ${className}`}
       {...props}
-    />
+    >
+      {children}
+    </button>
   );
 }

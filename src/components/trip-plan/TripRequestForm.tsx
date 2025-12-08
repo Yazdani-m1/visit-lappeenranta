@@ -3,6 +3,8 @@
 
 import * as React from 'react';
 import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { TextArea } from '@/components/ui/TextArea';
 
 type TripInterest =
   | 'harbour'
@@ -136,9 +138,15 @@ export function TripRequestForm() {
         body: JSON.stringify(payload),
       });
 
-      const json = await res.json().catch(() => null);
+      let json: any = null;
+      try {
+        json = await res.json();
+      } catch {
+        // ignore JSON parse errors
+      }
 
       if (!res.ok) {
+        console.error('Trip request failed', res.status, json);
         if (json?.error) {
           setServerError(json.error);
         } else {
@@ -173,13 +181,12 @@ export function TripRequestForm() {
         <label className="text-xs font-medium text-slate-700" htmlFor="name">
           Name
         </label>
-        <input
+        <Input
           id="name"
           name="name"
           type="text"
           value={form.name}
           onChange={handleChange}
-          className="w-full rounded-xl border border-sky-100 bg-slate-50 px-3 py-2 text-sm text-slate-900 outline-none ring-sky-100 placeholder:text-slate-400 focus:bg-white focus:ring-2"
           placeholder="Your name"
         />
         {errors.name && (
@@ -192,13 +199,12 @@ export function TripRequestForm() {
         <label className="text-xs font-medium text-slate-700" htmlFor="email">
           Email
         </label>
-        <input
+        <Input
           id="email"
           name="email"
           type="email"
           value={form.email}
           onChange={handleChange}
-          className="w-full rounded-xl border border-sky-100 bg-slate-50 px-3 py-2 text-sm text-slate-900 outline-none ring-sky-100 placeholder:text-slate-400 focus:bg-white focus:ring-2"
           placeholder="you@example.com"
         />
         {errors.email && (
@@ -215,13 +221,12 @@ export function TripRequestForm() {
           >
             Arrival date
           </label>
-          <input
+          <Input
             id="arrivalDate"
             name="arrivalDate"
             type="date"
             value={form.arrivalDate}
             onChange={handleChange}
-            className="w-full rounded-xl border border-sky-100 bg-slate-50 px-3 py-2 text-sm text-slate-900 outline-none ring-sky-100 focus:bg-white focus:ring-2"
           />
           {errors.arrivalDate && (
             <p className="text-xs text-red-500">{errors.arrivalDate}</p>
@@ -235,13 +240,12 @@ export function TripRequestForm() {
           >
             Departure date
           </label>
-          <input
+          <Input
             id="departureDate"
             name="departureDate"
             type="date"
             value={form.departureDate}
             onChange={handleChange}
-            className="w-full rounded-xl border border-sky-100 bg-slate-50 px-3 py-2 text-sm text-slate-900 outline-none ring-sky-100 focus:bg-white focus:ring-2"
           />
           {errors.departureDate && (
             <p className="text-xs text-red-500">{errors.departureDate}</p>
@@ -255,7 +259,7 @@ export function TripRequestForm() {
           >
             Group size
           </label>
-          <input
+          <Input
             id="groupSize"
             name="groupSize"
             type="number"
@@ -263,7 +267,6 @@ export function TripRequestForm() {
             max={20}
             value={form.groupSize}
             onChange={handleChange}
-            className="w-full rounded-xl border border-sky-100 bg-slate-50 px-3 py-2 text-sm text-slate-900 outline-none ring-sky-100 focus:bg-white focus:ring-2"
           />
           {errors.groupSize && (
             <p className="text-xs text-red-500">{errors.groupSize}</p>
@@ -317,13 +320,12 @@ export function TripRequestForm() {
         >
           Tell us a bit more
         </label>
-        <textarea
+        <TextArea
           id="message"
           name="message"
           rows={4}
           value={form.message}
           onChange={handleChange}
-          className="w-full rounded-xl border border-sky-100 bg-slate-50 px-3 py-2 text-sm text-slate-900 outline-none ring-sky-100 placeholder:text-slate-400 focus:bg-white focus:ring-2"
           placeholder="For example: first time in Finland, would love a calm day with lake views, cafés and 1–2 easy walks."
         />
         {errors.message && (

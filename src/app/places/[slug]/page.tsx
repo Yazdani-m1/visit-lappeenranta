@@ -1,7 +1,7 @@
 // src/app/places/[slug]/page.tsx
 import { notFound } from 'next/navigation';
-import { getAllPlaces, getPlaceBySlug } from '@/lib/places';
 import Link from 'next/link';
+import { getAllPlaces, getPlaceBySlug } from '@/lib/places';
 
 type PlaceParams = Promise<{ slug: string }>;
 
@@ -39,9 +39,11 @@ export default async function PlacePage({
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
             {place.category} · {place.subcategory}
           </p>
+
           <h1 className="text-2xl font-semibold tracking-tight text-slate-900 md:text-3xl">
             {place.name}
           </h1>
+
           <p className="text-sm text-slate-700">{place.shortLabel}</p>
 
           <div className="flex flex-wrap items-center gap-3 pt-1 text-xs">
@@ -52,9 +54,11 @@ export default async function PlacePage({
               </span>
             </span>
 
-            <span className="rounded-full bg-slate-100 px-3 py-1 text-[11px] text-slate-700">
-              {place.neighborhood}
-            </span>
+            {place.neighborhood && (
+              <span className="rounded-full bg-slate-100 px-3 py-1 text-[11px] text-slate-700">
+                {place.neighborhood}
+              </span>
+            )}
 
             <span className="rounded-full bg-slate-100 px-3 py-1 text-[11px] text-slate-700">
               {place.priceLevel} · ~{place.typicalVisitDurationMinutes} min visit
@@ -81,6 +85,7 @@ export default async function PlacePage({
 
       {/* Content + practical info */}
       <section className="mt-10 grid gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1.3fr)]">
+        {/* Left column */}
         <div className="space-y-6">
           <div className="space-y-2">
             <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-900">
@@ -91,7 +96,7 @@ export default async function PlacePage({
             </p>
           </div>
 
-          {place.highlights?.length ? (
+          {place.highlights && place.highlights.length > 0 && (
             <div className="space-y-2">
               <h3 className="text-sm font-semibold text-slate-900">
                 Highlights
@@ -102,12 +107,12 @@ export default async function PlacePage({
                 ))}
               </ul>
             </div>
-          ) : null}
+          )}
 
-          {place.tags?.length ? (
+          {place.tags && place.tags.length > 0 && (
             <div className="space-y-2">
               <h3 className="text-sm font-semibold text-slate-900">
-                Themes & keywords
+                Themes &amp; keywords
               </h3>
               <div className="flex flex-wrap gap-1.5">
                 {place.tags.map((tag) => (
@@ -120,9 +125,9 @@ export default async function PlacePage({
                 ))}
               </div>
             </div>
-          ) : null}
+          )}
 
-          {place.suitableFor?.length ? (
+          {place.suitableFor && place.suitableFor.length > 0 && (
             <div className="space-y-2">
               <h3 className="text-sm font-semibold text-slate-900">Good for</h3>
               <div className="flex flex-wrap gap-1.5">
@@ -136,7 +141,7 @@ export default async function PlacePage({
                 ))}
               </div>
             </div>
-          ) : null}
+          )}
 
           {hasLocalTip && (
             <div className="space-y-2 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
@@ -148,6 +153,7 @@ export default async function PlacePage({
           )}
         </div>
 
+        {/* Right column – practical info */}
         <aside className="space-y-4 rounded-3xl border border-slate-200 bg-white p-5 text-sm text-slate-700 shadow-sm">
           <h2 className="text-sm font-semibold text-slate-900">
             Practical info
