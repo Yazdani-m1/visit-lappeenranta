@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Visit Lappeenranta
 
-## Getting Started
+A calm, Nordic-style mini city guide and simple trip planner for Lappeenranta, built with **Next.js, React 18, TypeScript and Tailwind CSS**.
 
-First, run the development server:
+Visitors can explore curated places around the Saimaa lake area (harbour, fortress, cafés, saunas, nature trails) and send a short message to request a custom trip plan by email.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Tech stack
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Next.js (App Router)
+- React 18 + TypeScript
+- Tailwind CSS (utility-first, custom 3D card design)
+- Node.js API routes
+- (Planned) Supabase/Postgres for persisting trip requests
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Landing page with:
+  - hero section introducing Lappeenranta
+  - primary call-to-action to **request a simple trip plan**
+  - highlight cards for top-rated places
+- Places index page (`/places`) with:
+  - structured cards per place (category, rating, tags, price level, duration)
+- Dynamic place detail page (`/places/[slug]`) with:
+  - overview, highlights and practical info
+  - CTA to request a plan including this place
+- Trip-plan request page (`/trip-plan`) with:
+  - clean form for name, email, travel dates, interests and free message
+  - API endpoint to accept and validate requests (ready to plug into Supabase)
 
-## Learn More
+## Project structure
 
-To learn more about Next.js, take a look at the following resources:
+```txt
+src/
+  app/
+    layout.tsx          # Root layout with header/footer shell
+    page.tsx            # Landing page
+    places/
+      page.tsx          # /places – list view
+      [slug]/
+        page.tsx        # /places/[slug] – detail view
+    trip-plan/
+      page.tsx          # /trip-plan – trip request form
+    api/
+      trip-requests/
+        route.ts        # POST /api/trip-requests
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+  components/
+    layout/
+      Header.tsx
+      Footer.tsx
+      Shell.tsx
+    ui/
+      Button.tsx
+    places/
+      PlaceCard.tsx
+    trip-plan/
+      TripRequestForm.tsx
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+  lib/
+    places.ts           # data & helpers for places
+    utils.ts            # small helpers (e.g. cn)
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+  types/
+    place.ts
+    tripRequest.ts
+    index.ts            # re-exports
