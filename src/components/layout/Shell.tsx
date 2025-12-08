@@ -9,12 +9,12 @@ interface ShellProps {
 
 export function Shell({ children }: ShellProps) {
   return (
-    <div className="flex min-h-screen flex-col bg-gradient-to-b from-sky-50 via-white to-sky-100">
-      <Header />
-      <main className="flex-1">
-        {children}
-      </main>
-      <Footer />
+    <div className="min-h-screen bg-sky-50 text-slate-900">
+      <div className="mx-auto flex min-h-screen max-w-6xl flex-col px-4 pb-8 pt-4 md:px-6 md:pb-10 md:pt-6">
+        <Header />
+        <main className="mt-6 flex-1 md:mt-8">{children}</main>
+        <Footer />
+      </div>
     </div>
   );
 }

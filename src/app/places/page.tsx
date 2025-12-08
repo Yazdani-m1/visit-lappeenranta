@@ -7,43 +7,42 @@ export default function PlacesPage() {
   const categories = getAllCategories();
 
   return (
-    <main className="mx-auto max-w-6xl px-4 pb-16 pt-10 md:pb-24 md:pt-16 space-y-8">
-      <header className="space-y-3">
-        <h1 className="text-xl font-semibold tracking-tight text-slate-900 md:text-2xl">
+    <div className="space-y-8 md:space-y-10">
+      <section className="space-y-3">
+        <h1 className="text-2xl font-semibold tracking-tight text-slate-900 md:text-3xl">
           Explore Lappeenranta
         </h1>
-        <p className="max-w-2xl text-sm text-slate-700">
-          Find lakeside views, fortress cafés, cosy hotels and local everyday
-          spots across Lappeenranta. Browse by category and open any place to
-          see practical info, tips from locals and suggested visit times.
+        <p className="max-w-2xl text-sm leading-relaxed text-slate-700 md:text-base">
+          Find lakeside views, fortress cafés, cosy hotels and local everyday spots across
+          Lappeenranta. Browse by category and open any place to see practical info, tips from
+          locals and suggested visit times.
         </p>
-      </header>
+      </section>
 
-      <div className="space-y-10">
+      <section className="space-y-8">
         {categories.map((category) => {
           const items = places.filter((p) => p.category === category);
           if (!items.length) return null;
 
           return (
-            <section key={category} className="space-y-4">
+            <div key={category} className="space-y-3">
               <div className="flex items-baseline justify-between gap-2">
-                <h2 className="text-lg font-semibold tracking-tight text-slate-900">
+                <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-900">
                   {category}
                 </h2>
-                <p className="text-[11px] text-slate-500">
-                  {items.length} places
-                </p>
+                <span className="text-xs text-slate-500">
+                  {items.length} place{items.length > 1 ? 's' : ''}
+                </span>
               </div>
-
-              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+              <div className="grid gap-4 md:grid-cols-3">
                 {items.map((place) => (
                   <PlaceCard key={place.id} place={place} />
                 ))}
               </div>
-            </section>
+            </div>
           );
         })}
-      </div>
-    </main>
+      </section>
+    </div>
   );
 }
