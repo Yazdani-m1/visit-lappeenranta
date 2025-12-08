@@ -4,6 +4,10 @@ A calm, Nordic-style mini city guide and simple trip planner for Lappeenranta, b
 
 Visitors can explore curated places around the Saimaa lake area (harbour, fortress, cafés, saunas, nature trails) and send a short message to request a custom trip plan by email.
 
+## Live demo
+
+👉 https://visit-lappeenranta.vercel.app
+
 ## Tech stack
 
 - Next.js (App Router)
