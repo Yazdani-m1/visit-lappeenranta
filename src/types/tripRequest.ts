@@ -1,14 +1,26 @@
 // src/types/tripRequest.ts
-export interface TripRequestPayload {
+
+export type TripInterest =
+  | 'harbour'
+  | 'fortress'
+  | 'cafes'
+  | 'saunas'
+  | 'nature'
+  | 'student-life'
+  | 'family';
+
+export interface TripRequestInput {
   name: string;
   email: string;
-  travel_start?: string; // 'YYYY-MM-DD'
-  travel_end?: string;   // 'YYYY-MM-DD'
-  interests?: string;
+  arrivalDate: string; // YYYY-MM-DD
+  departureDate: string; // YYYY-MM-DD
+  groupSize: number;
+  interests: TripInterest[];
   message: string;
 }
 
-export interface TripRequest extends TripRequestPayload {
+export interface TripRequestRecord extends TripRequestInput {
   id: string;
   created_at: string;
+  source_page?: string | null;
 }

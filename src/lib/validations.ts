@@ -1,28 +1,41 @@
 // src/lib/validations.ts
-import type { TripRequestPayload } from '@/types';
+import { z } from 'zod';
+import type { TripInterest, TripRequestInput } from '@/types/tripRequest';
 
-export function validateTripRequest(input: TripRequestPayload): {
-  valid: boolean;
-  errors: Partial<Record<keyof TripRequestPayload, string>>;
-} {
-  const errors: Partial<Record<keyof TripRequestPayload, string>> = {};
+export const tripInterestEnum = z.enum([
+  'harbour',
+  'fortress',
+  'cafes',
+  'saunas',
+  'nature',
+  'student-life',
+  'family',
+] satisfies TripInterest[]);
 
-  if (!input.name || !input.name.trim()) {
-    errors.name = 'Name is required';
+export const tripRequestSchema = z.object({
+  name: z.string().min(2).max(80),
+  email: z.string().email(),
+  arrivalDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Invalid date format'),
+  departureDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Invalid date format'),
+  groupSize: z.number().int().min(1).max(20),
+  interests: z.array(tripInterestEnum).min(1).max(6),
+  message: z.string().min(10).max(1000),
+});
+
+export type TripRequestSchemaInput = z.infer<typeof tripRequestSchema>;
+
+// Optional extra check: arrival <= departure
+export function validateTripDates(input: Pick<TripRequestInput, 'arrivalDate' | 'departureDate'>) {
+  const arrival = new Date(input.arrivalDate);
+  const departure = new Date(input.departureDate);
+
+  if (Number.isNaN(arrival.getTime()) || Number.isNaN(departure.getTime())) {
+    return 'Invalid dates';
   }
 
-  if (!input.email || !input.email.trim()) {
-    errors.email = 'Email is required';
-  } else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(input.email)) {
-    errors.email = 'Email is not valid';
+  if (arrival > departure) {
+    return 'Departure date must be after arrival date';
   }
 
-  if (!input.message || !input.message.trim()) {
-    errors.message = 'Please tell us a bit about your trip';
-  }
-
-  return {
-    valid: Object.keys(errors).length === 0,
-    errors,
-  };
+  return null;
 }
