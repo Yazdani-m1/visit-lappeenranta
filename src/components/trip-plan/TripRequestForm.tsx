@@ -25,6 +25,10 @@ interface FormState {
   message: string;
 }
 
+type TripRequestResponse = {
+  error?: string;
+};
+
 const interestOptions: { value: TripInterest; label: string; hint: string }[] = [
   { value: 'harbour', label: 'Harbour & lake views', hint: 'Promenade, sunset walks' },
   { value: 'fortress', label: 'Fortress & history', hint: 'Old town, museums' },
@@ -138,9 +142,10 @@ export function TripRequestForm() {
         body: JSON.stringify(payload),
       });
 
-      let json: any = null;
+      let json: TripRequestResponse | null = null;
+
       try {
-        json = await res.json();
+        json = (await res.json()) as TripRequestResponse;
       } catch {
         // ignore JSON parse errors
       }
