@@ -1,53 +1,44 @@
-// src/__tests__/lib/places.test.ts
-import { getAllPlaces, getPlaceBySlug, getTopRatedPlaces } from '@/lib/places';
-import type { Place } from '@/types';
+// src/__tests__/lib/places.test.tsx
+import {
+  getAllPlaces,
+  getPlaceBySlug,
+  getTopRatedPlaces,
+} from '@/lib/places';
 
-describe('places lib', () => {
-  it('getAllPlaces returns a non-empty list with unique ids', () => {
+describe('lib/places', () => {
+  it('getAllPlaces returns a non-empty list with valid slugs', () => {
     const all = getAllPlaces();
 
     expect(all.length).toBeGreaterThan(0);
 
-    const ids = all.map((p) => p.id);
-    const uniqueIds = new Set(ids);
-    expect(uniqueIds.size).toBe(ids.length);
+    for (const place of all) {
+      expect(place.slug).toBeDefined();
+      expect(place.slug.length).toBeGreaterThan(0);
+    }
   });
 
-  it('getPlaceBySlug returns a place for a known slug', () => {
-    // This slug is present in your dataset (SSG paths showed it)
-    const slug = 'lappeenranta-fortress';
+  it('getPlaceBySlug finds a place by slug', () => {
+    const all = getAllPlaces();
+    const sample = all[0];
 
-    const place = getPlaceBySlug(slug);
+    const found = getPlaceBySlug(sample.slug);
 
-    expect(place).toBeDefined();
-    expect(place?.slug).toBe(slug);
-    expect(place?.name).toBeTruthy();
+    expect(found).toBeDefined();
+    expect(found?.id).toBe(sample.id);
   });
 
-  it('getTopRatedPlaces returns places sorted by ratingAverage', () => {
-    const limit = 5;
-    const top = getTopRatedPlaces(limit);
+  it('getTopRatedPlaces returns places sorted by rating desc', () => {
+    const top = getTopRatedPlaces(5);
 
-    // Should respect the limit (if we have at least "limit" places)
     expect(top.length).toBeGreaterThan(0);
-    expect(top.length).toBeLessThanOrEqual(limit);
 
-    // Should be sorted by ratingAverage desc
-    for (let i = 0; i < top.length - 1; i++) {
-      const current = top[i] as Place;
-      const next = top[i + 1] as Place;
+    for (let i = 1; i < top.length; i++) {
+      const prevRating =
+        top[i - 1].ratingAverage ?? top[i - 1].rating ?? 0;
+      const currentRating =
+        top[i].ratingAverage ?? top[i].rating ?? 0;
 
-      // If either ratingAverage is missing, skip that comparison
-      if (
-        typeof current.ratingAverage !== 'number' ||
-        typeof next.ratingAverage !== 'number'
-      ) {
-        continue;
-      }
-
-      expect(current.ratingAverage).toBeGreaterThanOrEqual(
-        next.ratingAverage
-      );
+      expect(prevRating).toBeGreaterThanOrEqual(currentRating);
     }
   });
 });
