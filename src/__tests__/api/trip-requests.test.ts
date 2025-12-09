@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 // src/__tests__/api/trip-requests.test.ts
 
 const mockInsert = jest.fn();
